@@ -1,5 +1,5 @@
 import productJson from './product.json';
-import blogJson from './blog.json';
+
 /**
 
 */
@@ -9,8 +9,4 @@ function generateMockProductData(count, tag) {
   return filtered.slice(0, count);
 }
 
-function generateMockBlogData(count) {
-  return blogJson.slice(0, count);
-}
-
-export { generateMockProductData, generateMockBlogData };
+export { generateMockProductData };

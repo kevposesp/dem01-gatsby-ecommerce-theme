@@ -1,6 +1,7 @@
+import 'dotenv/config';
 import { neon } from '@netlify/neon';
 
-const sql = neon();
+const sql = neon(process.env.NETLIFY_DATABASE_URL);
 
 async function migrate() {
   try {
