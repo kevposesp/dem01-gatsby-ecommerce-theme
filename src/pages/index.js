@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import AttributeGrid from '../components/AttributeGrid';
 import Container from '../components/Container';
@@ -19,7 +19,25 @@ import { toOptimizedImage } from '../helpers/general';
 
 const IndexPage = () => {
   const newArrivals = generateMockProductData(3, 'shirt');
-  const blogData = generateMockBlogData(3);
+  const [blogData, setBlogData] = useState([]);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await fetch('/api/blogs');
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.length > 0) {
+            setBlogData(data.slice(0, 12));
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching blogs from database:', error);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
 
   const goToShop = () => {
     navigate('/shop');
