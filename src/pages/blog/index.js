@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { navigate } from 'gatsby';
 
 import BlogPreviewGrid from '../../components/BlogPreviewGrid';
@@ -12,7 +12,28 @@ import * as styles from './index.module.css';
 import { toOptimizedImage } from '../../helpers/general';
 
 const BlogPage = (props) => {
-  const blogData = generateMockBlogData(6);
+  const [blogData, setBlogData] = useState(generateMockBlogData(6));
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await fetch('/api/blogs');
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.length > 0) {
+            setBlogData(data.slice(0, 6));
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching blogs from database:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
 
   return (
     <Layout disablePaddingBottom>
