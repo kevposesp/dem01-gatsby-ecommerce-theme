@@ -11,7 +11,7 @@ import ProductCardGrid from '../components/ProductCardGrid';
 import Quote from '../components/Quote';
 import Title from '../components/Title';
 
-import { generateMockBlogData, generateMockProductData } from '../helpers/mock';
+import { generateMockProductData } from '../helpers/mock';
 
 import * as styles from './index.module.css';
 import { Link, navigate } from 'gatsby';
@@ -27,6 +27,8 @@ const IndexPage = () => {
         const response = await fetch('/api/blogs');
         if (response.ok) {
           const data = await response.json();
+          console.log('data', data);
+          
           if (data && data.length > 0) {
             setBlogData(data.slice(0, 12));
           }
