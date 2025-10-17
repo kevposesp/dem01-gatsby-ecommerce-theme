@@ -1,12 +1,11 @@
-import 'dotenv/config';
 import { neon } from '@netlify/neon';
 
-const sql = neon(process.env.NETLIFY_DATABASE_URL);
+const sql = neon();
 
-export default async (req, context) => {  
+export default async (req, context) => {
   try {
-    const blogs = await sql('SELECT * FROM blogs ORDER BY created_at DESC');    
-    
+    const blogs = await sql('SELECT * FROM blogs ORDER BY created_at DESC');
+
     return new Response(JSON.stringify(blogs), {
       status: 200,
       headers: {
