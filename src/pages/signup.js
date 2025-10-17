@@ -5,6 +5,7 @@ import {
   validateStrongPassword,
   isEmpty,
 } from '../helpers/general';
+import { useAuth } from '../context/AuthContext';
 import * as styles from './signup.module.css';
 
 import AttributeGrid from '../components/AttributeGrid/AttributeGrid';
@@ -13,6 +14,7 @@ import FormInputField from '../components/FormInputField/FormInputField';
 import Button from '../components/Button';
 
 const SignupPage = (props) => {
+  const { register } = useAuth();
   const initialState = {
     firstName: '',
     lastName: '',
@@ -29,13 +31,14 @@ const SignupPage = (props) => {
 
   const [signupForm, setSignupForm] = useState(initialState);
   const [errorForm, setErrorForm] = useState(errorState);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleChange = (id, e) => {
     const tempForm = { ...signupForm, [id]: e };
     setSignupForm(tempForm);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let validForm = true;
     const tempError = { ...errorState };
@@ -64,16 +67,36 @@ const SignupPage = (props) => {
 
     if (validForm === true) {
       setErrorForm(errorState);
-      navigate('/accountSuccess');
-      window.localStorage.setItem('key', 'sampleToken');
-      //create account endpoint
+      
+      const result = await register(
+        signupForm.firstName,
+        signupForm.lastName,
+        signupForm.email,
+        signupForm.password
+      );
+      
+      if (result.success) {
+        navigate('/accountSuccess');
+        window.localStorage.setItem('key', 'sampleToken');
+      } else {
+        setErrorMessage(result.error || 'Registration failed. Please try again.');
+      }
     } else {
       setErrorForm(tempError);
+      setErrorMessage('');
     }
   };
 
   return (
     <Layout disablePaddingBottom={true}>
+      <div
+        className={`${styles.errorContainer} ${
+          errorMessage !== '' ? styles.show : ''
+        }`}
+      >
+        <span className={styles.errorMessage}>{errorMessage}</span>
+      </div>
+      
       <div className={styles.root}>
         <div className={styles.signupFormContainer}>
           <h1 className={styles.title}>Create Account</h1>
