@@ -14,7 +14,9 @@
     "serve": "gatsby serve",
     "clean": "gatsby clean",
     "format": "prettier --write \"{gatsby-*.js,src/**/*.js}\"",
-    "plop": "plop"
+    "plop": "plop",
+    "db:migrate": "node scripts/migrate.js",
+    "db:seed": "node scripts/seed.js"
   },
   "dependencies": {
     "@netlify/neon": "^0.1.0",

@@ -1,4 +1,3 @@
-// https://stackoverflow.com/questions/63124432/how-do-i-configure-mini-css-extract-plugin-in-gatsby
 exports.onCreateWebpackConfig = (helper) => {
   const { stage, actions, getConfig } = helper;
   if (stage === 'develop' || stage === 'build-javascript') {

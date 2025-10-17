@@ -1,6 +1,6 @@
-import 'dotenv/config';
-import { neon } from '@netlify/neon';
-import blogData from '../src/helpers/blog.json' assert { type: 'json' };
+require('dotenv/config');
+const { neon } = require('@netlify/neon');
+const blogData = require('../src/helpers/blog.json');
 
 const sql = neon(process.env.NETLIFY_DATABASE_URL);
 

@@ -1,5 +1,5 @@
-import 'dotenv/config';
-import { neon } from '@netlify/neon';
+require('dotenv/config');
+const { neon } = require('@netlify/neon');
 
 const sql = neon(process.env.NETLIFY_DATABASE_URL);
 

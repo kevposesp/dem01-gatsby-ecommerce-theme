@@ -1,5 +1,5 @@
 [build]
-  command = "gatsby build"
+  command = "node scripts/migrate.js && gatsby build"
   functions = "netlify/functions"
   publish = "public"
 
