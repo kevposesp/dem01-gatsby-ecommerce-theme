@@ -1,7 +1,7 @@
-import React from 'react';
+const React = require('react');
 
-import { NotificationProvider } from './src/context/AddItemNotificationProvider';
+const { NotificationProvider } = require('./src/context/AddItemNotificationProvider');
 
-export const wrapRootElement = ({ element }) => (
-  <NotificationProvider>{element}</NotificationProvider>
+exports.wrapRootElement = ({ element }) => (
+  React.createElement(NotificationProvider, null, element)
 );
