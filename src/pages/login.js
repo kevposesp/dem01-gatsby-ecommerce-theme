@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, navigate } from 'gatsby';
 import { validateEmail, isEmpty } from '../helpers/general';
+import { useAuth } from '../context/AuthContext';
 import * as styles from './login.module.css';
 
 import AttributeGrid from '../components/AttributeGrid/AttributeGrid';
@@ -9,6 +10,7 @@ import FormInputField from '../components/FormInputField/FormInputField';
 import Button from '../components/Button';
 
 const LoginPage = (props) => {
+  const { login } = useAuth();
   const initialState = {
     email: '',
     password: '',
@@ -28,7 +30,7 @@ const LoginPage = (props) => {
     setLoginForm(tempForm);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let validForm = true;
     const tempError = { ...errorForm };
@@ -51,15 +53,14 @@ const LoginPage = (props) => {
     if (validForm === true) {
       setErrorForm(errorState);
 
-      //mock login
-      if (loginForm.email !== 'error@example.com') {
+      const result = await login(loginForm.email, loginForm.password);
+      
+      if (result.success) {
         navigate('/account');
         window.localStorage.setItem('key', 'sampleToken');
       } else {
         window.scrollTo(0, 0);
-        setErrorMessage(
-          'There is no such account associated with this email address'
-        );
+        setErrorMessage(result.error || 'Login failed. Please try again.');
       }
     } else {
       setErrorMessage('');

@@ -45,6 +45,27 @@
     border-bottom: 1px solid var(--standard-gold);
 }
 
+.errorContainer {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 12px 20px;
+    border-radius: 4px;
+    margin: 20px 0;
+    border: 1px solid #f5c6cb;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.errorContainer.show {
+    opacity: 1;
+}
+
+.errorMessage {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
 @media (max-width: 800px) {
     .root {
         padding: 0px 16px;

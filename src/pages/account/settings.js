@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { navigate } from 'gatsby';
+import { useAuth } from '../../context/AuthContext';
 import * as styles from './settings.module.css';
 
 import AccountLayout from '../../components/AccountLayout';
@@ -15,6 +16,8 @@ import {
 } from '../../helpers/general';
 
 const SettingsPage = (props) => {
+  const { user, updateProfile, isAuthenticated } = useAuth();
+  
   if (isAuth() === false) {
     navigate('/login');
   }
@@ -23,6 +26,7 @@ const SettingsPage = (props) => {
     firstName: '',
     lastName: '',
     email: '',
+    currentPassword: '',
     password: '',
     confirmPassword: '',
   };
@@ -31,24 +35,37 @@ const SettingsPage = (props) => {
     firstName: '',
     lastName: '',
     email: '',
+    currentPassword: '',
     password: '',
     confirmPassword: '',
   };
 
   const [updateForm, setUpdateForm] = useState(initialState);
   const [error, setError] = useState(errorState);
+  const [successMessage, setSuccessMessage] = useState('');
+
+  useEffect(() => {
+    if (user && isAuthenticated()) {
+      setUpdateForm({
+        ...initialState,
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        email: user.email || ''
+      });
+    }
+  }, [user]);
 
   const handleChange = (id, e) => {
     const tempForm = { ...updateForm, [id]: e };
     setUpdateForm(tempForm);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let validForm = true;
     const tempError = { ...errorState };
 
-    if (updateForm.email !== '') {
+    if (updateForm.email !== '' && updateForm.email !== user?.email) {
       if (validateEmail(updateForm.email) !== true) {
         validForm = false;
         tempError.email =
@@ -57,6 +74,11 @@ const SettingsPage = (props) => {
     }
 
     if (updateForm.password !== '') {
+      if (!updateForm.currentPassword) {
+        validForm = false;
+        tempError.currentPassword = 'Current password is required to change password';
+      }
+      
       if (validateStrongPassword(updateForm.password) === false) {
         validForm = false;
         tempError.password =
@@ -70,11 +92,46 @@ const SettingsPage = (props) => {
     }
 
     if (validForm === true) {
-      //success
-      setError(errorState);
-      setUpdateForm(initialState);
+      const updates = {};
+      
+      if (updateForm.firstName && updateForm.firstName !== user?.firstName) {
+        updates.firstName = updateForm.firstName;
+      }
+      if (updateForm.lastName && updateForm.lastName !== user?.lastName) {
+        updates.lastName = updateForm.lastName;
+      }
+      if (updateForm.email && updateForm.email !== user?.email) {
+        updates.email = updateForm.email;
+      }
+      if (updateForm.password) {
+        updates.currentPassword = updateForm.currentPassword;
+        updates.newPassword = updateForm.password;
+      }
+
+      if (Object.keys(updates).length > 0) {
+        const result = await updateProfile(updates);
+        
+        if (result.success) {
+          setError(errorState);
+          setSuccessMessage('Profile updated successfully!');
+          setUpdateForm({
+            ...updateForm,
+            currentPassword: '',
+            password: '',
+            confirmPassword: ''
+          });
+          setTimeout(() => setSuccessMessage(''), 3000);
+        } else {
+          setError({ ...errorState, email: result.error });
+          setSuccessMessage('');
+        }
+      } else {
+        setSuccessMessage('No changes to save');
+        setTimeout(() => setSuccessMessage(''), 3000);
+      }
     } else {
       setError(tempError);
+      setSuccessMessage('');
     }
   };
 
@@ -89,6 +146,11 @@ const SettingsPage = (props) => {
           ]}
         />
         <h1>Settings</h1>
+        {successMessage && (
+          <div className={styles.successMessage}>
+            {successMessage}
+          </div>
+        )}
         <div>
           <form onSubmit={(e) => handleSubmit(e)} noValidate>
             <div className={styles.nameSection}>
@@ -118,6 +180,14 @@ const SettingsPage = (props) => {
             <div className={styles.passwordContainer}>
               <h2>Change Password</h2>
               <div className={styles.passwordSection}>
+                <FormInputField
+                  id={'currentPassword'}
+                  value={updateForm.currentPassword}
+                  handleChange={(id, e) => handleChange(id, e)}
+                  type={'password'}
+                  labelName={'Current Password'}
+                  error={error.currentPassword}
+                />
                 <FormInputField
                   id={'password'}
                   value={updateForm.password}
