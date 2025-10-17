@@ -1,7 +1,8 @@
+import 'dotenv/config';
 import { neon } from '@netlify/neon';
 import blogData from '../src/helpers/blog.json' assert { type: 'json' };
 
-const sql = neon();
+const sql = neon(process.env.NETLIFY_DATABASE_URL);
 
 async function seed() {
   try {

@@ -7,12 +7,11 @@ import Hero from '../../components/Hero';
 import Layout from '../../components/Layout/Layout';
 import ThemeLink from '../../components/ThemeLink';
 
-import { generateMockBlogData } from '../../helpers/mock';
 import * as styles from './index.module.css';
 import { toOptimizedImage } from '../../helpers/general';
 
 const BlogPage = (props) => {
-  const [blogData, setBlogData] = useState(generateMockBlogData(6));
+  const [blogData, setBlogData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -22,7 +21,7 @@ const BlogPage = (props) => {
         if (response.ok) {
           const data = await response.json();
           if (data && data.length > 0) {
-            setBlogData(data.slice(0, 6));
+            setBlogData(data.slice(0, 12));
           }
         }
       } catch (error) {
