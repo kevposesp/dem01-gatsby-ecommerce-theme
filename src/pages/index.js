@@ -24,13 +24,12 @@ const IndexPage = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch('/api/blogs');
+        const response = await fetch('/api/blogs?limit=3');
         if (response.ok) {
           const data = await response.json();
-          console.log('data', data);
           
           if (data && data.length > 0) {
-            setBlogData(data.slice(0, 12));
+            setBlogData(data);
           }
         }
       } catch (error) {

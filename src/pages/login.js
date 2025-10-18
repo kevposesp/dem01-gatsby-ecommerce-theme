@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, navigate } from 'gatsby';
 import { validateEmail, isEmpty } from '../helpers/general';
 import { useAuth } from '../context/AuthContext';
@@ -8,7 +8,7 @@ import AttributeGrid from '../components/AttributeGrid/AttributeGrid';
 import Layout from '../components/Layout/Layout';
 import FormInputField from '../components/FormInputField/FormInputField';
 import Button from '../components/Button';
-import Toast from '../components/Toast';
+import { useToast } from '../context/ToastContext';
 
 const LoginPage = (props) => {
   const { login, isAuthenticated, loading } = useAuth();
@@ -25,13 +25,7 @@ const LoginPage = (props) => {
   const [loginForm, setLoginForm] = useState(initialState);
   const [errorForm, setErrorForm] = useState(errorState);
   const [errorMessage, setErrorMessage] = useState('');
-  const [showToast, setShowToast] = useState(false);
-
-  useEffect(() => {
-    if (!loading && isAuthenticated()) {
-      navigate('/account/settings');
-    }
-  }, [loading, isAuthenticated]);
+  const { showToast } = useToast();
 
   const handleChange = (id, e) => {
     const tempForm = { ...loginForm, [id]: e };
@@ -64,11 +58,7 @@ const LoginPage = (props) => {
       const result = await login(loginForm.email, loginForm.password);
       
       if (result.success) {
-        setShowToast(true);
-        setTimeout(() => {
-          navigate('/account/settings');
-        }, 1000);
-        window.localStorage.setItem('key', 'sampleToken');
+        showToast({ message: 'Login successful! Redirecting...', type: 'success', duration: 1000 });
       } else {
         window.scrollTo(0, 0);
         setErrorMessage(result.error || 'Login failed. Please try again.');
@@ -81,12 +71,6 @@ const LoginPage = (props) => {
 
   return (
     <Layout disablePaddingBottom={true}>
-      <Toast 
-        message="Login successful! Redirecting..."
-        show={showToast}
-        onClose={() => setShowToast(false)}
-        type="success"
-      />
       <div
         className={`${styles.errorContainer} ${
           errorMessage !== '' ? styles.show : ''
