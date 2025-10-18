@@ -5,13 +5,8 @@ import AccountLayout from '../../components/AccountLayout/AccountLayout';
 import Breadcrumbs from '../../components/Breadcrumbs';
 import Layout from '../../components/Layout/Layout';
 import OrderItem from '../../components/OrderItem/OrderItem';
-import { isAuth } from '../../helpers/general';
-import { navigate } from 'gatsby';
 
 const OrderPage = (props) => {
-  if (isAuth() === false) {
-    navigate('/login');
-  }
 
   const sampleOrder1 = {
     id: '2',

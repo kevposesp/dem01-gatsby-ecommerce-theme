@@ -16,11 +16,13 @@ import {
 } from '../../helpers/general';
 
 const SettingsPage = (props) => {
-  const { user, updateProfile, isAuthenticated } = useAuth();
-  
-  if (isAuth() === false) {
-    navigate('/login');
-  }
+  const { user, updateProfile, isAuthenticated, loading } = useAuth();
+
+  // useEffect(() => {
+  //   if (!loading && isAuthenticated()) {
+  //     navigate('/account/settings');
+  //   }
+  // }, [loading, isAuthenticated]);
 
   const initialState = {
     firstName: '',
@@ -78,7 +80,7 @@ const SettingsPage = (props) => {
         validForm = false;
         tempError.currentPassword = 'Current password is required to change password';
       }
-      
+
       if (validateStrongPassword(updateForm.password) === false) {
         validForm = false;
         tempError.password =
@@ -93,7 +95,7 @@ const SettingsPage = (props) => {
 
     if (validForm === true) {
       const updates = {};
-      
+
       if (updateForm.firstName && updateForm.firstName !== user?.firstName) {
         updates.firstName = updateForm.firstName;
       }
@@ -110,7 +112,7 @@ const SettingsPage = (props) => {
 
       if (Object.keys(updates).length > 0) {
         const result = await updateProfile(updates);
-        
+
         if (result.success) {
           setError(errorState);
           setSuccessMessage('Profile updated successfully!');
