@@ -1,10 +1,13 @@
 import { Link, navigate } from 'gatsby';
 import React from 'react';
+import { useAuth } from '../../context/AuthContext';
 import * as styles from './AccountNav.module.css';
 
 const AccountNav = (props) => {
+  const { logout } = useAuth();
+  
   const handleLogout = () => {
-    window.localStorage.removeItem('key');
+    logout();
     navigate('/');
   };
 
@@ -31,6 +34,13 @@ const AccountNav = (props) => {
           className={styles.webLink}
         >
           Settings
+        </Link>
+        <Link
+          activeClassName={styles.activeLink}
+          to={'/account/favorites/'}
+          className={styles.webLink}
+        >
+          Mis Favoritos
         </Link>
         <Link
           activeClassName={styles.activeLink}

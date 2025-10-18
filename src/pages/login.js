@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, navigate } from 'gatsby';
 import { validateEmail, isEmpty } from '../helpers/general';
 import { useAuth } from '../context/AuthContext';
@@ -8,9 +8,10 @@ import AttributeGrid from '../components/AttributeGrid/AttributeGrid';
 import Layout from '../components/Layout/Layout';
 import FormInputField from '../components/FormInputField/FormInputField';
 import Button from '../components/Button';
+import Toast from '../components/Toast';
 
 const LoginPage = (props) => {
-  const { login } = useAuth();
+  const { login, isAuthenticated, loading } = useAuth();
   const initialState = {
     email: '',
     password: '',
@@ -24,6 +25,13 @@ const LoginPage = (props) => {
   const [loginForm, setLoginForm] = useState(initialState);
   const [errorForm, setErrorForm] = useState(errorState);
   const [errorMessage, setErrorMessage] = useState('');
+  const [showToast, setShowToast] = useState(false);
+
+  useEffect(() => {
+    if (!loading && isAuthenticated()) {
+      navigate('/account/settings');
+    }
+  }, [loading, isAuthenticated]);
 
   const handleChange = (id, e) => {
     const tempForm = { ...loginForm, [id]: e };
@@ -56,7 +64,10 @@ const LoginPage = (props) => {
       const result = await login(loginForm.email, loginForm.password);
       
       if (result.success) {
-        navigate('/account');
+        setShowToast(true);
+        setTimeout(() => {
+          navigate('/account/settings');
+        }, 1000);
         window.localStorage.setItem('key', 'sampleToken');
       } else {
         window.scrollTo(0, 0);
@@ -70,6 +81,12 @@ const LoginPage = (props) => {
 
   return (
     <Layout disablePaddingBottom={true}>
+      <Toast 
+        message="Login successful! Redirecting..."
+        show={showToast}
+        onClose={() => setShowToast(false)}
+        type="success"
+      />
       <div
         className={`${styles.errorContainer} ${
           errorMessage !== '' ? styles.show : ''
