@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { navigate } from 'gatsby';
 import * as styles from './favorites.module.css';
 
+import AccountLayout from '../../components/AccountLayout';
 import Button from '../../components/Button';
 import Breadcrumbs from '../../components/Breadcrumbs';
-import Container from '../../components/Container';
 import FavoriteCard from '../../components/FavoriteCard/FavoriteCard';
 import Layout from '../../components/Layout/Layout';
 import Modal from '../../components/Modal';
@@ -41,35 +41,34 @@ const FavoritesPage = (props) => {
 
   return (
     <Layout>
-      <div className={styles.root}>
-        <Container size={'large'}>
-          <Breadcrumbs
-            crumbs={[
-              { link: '/', label: 'Home' },
-              { link: '/account/favorites', label: 'Favorites' },
-            ]}
+      <AccountLayout>
+        <Breadcrumbs
+          crumbs={[
+            { link: '/', label: 'Home' },
+            { link: '/account', label: 'Account' },
+            { link: '/account/favorites', label: 'Favorites' },
+          ]}
+        />
+        <h1>Favorites</h1>
+        <div className={styles.favoriteListContainer}>
+          <FavoriteCard
+            showConfirmDialog={() => setShowDelete(true)}
+            {...sampleFavorite1}
           />
-          <h1>Favorites</h1>
-          <div className={styles.favoriteListContainer}>
-            <FavoriteCard
-              showConfirmDialog={() => setShowDelete(true)}
-              {...sampleFavorite1}
-            />
-            <FavoriteCard
-              showConfirmDialog={() => setShowDelete(true)}
-              {...sampleFavorite2}
-            />
-            <FavoriteCard
-              showConfirmDialog={() => setShowDelete(true)}
-              {...sampleFavorite3}
-            />
-            <FavoriteCard
-              showConfirmDialog={() => setShowDelete(true)}
-              {...sampleFavorite2}
-            />
-          </div>
-        </Container>
-      </div>
+          <FavoriteCard
+            showConfirmDialog={() => setShowDelete(true)}
+            {...sampleFavorite2}
+          />
+          <FavoriteCard
+            showConfirmDialog={() => setShowDelete(true)}
+            {...sampleFavorite3}
+          />
+          <FavoriteCard
+            showConfirmDialog={() => setShowDelete(true)}
+            {...sampleFavorite2}
+          />
+        </div>
+      </AccountLayout>
       <Modal visible={showDelete} close={() => setShowDelete(false)}>
         <div className={styles.confirmDeleteContainer}>
           <h4>Remove from Favorites?</h4>
