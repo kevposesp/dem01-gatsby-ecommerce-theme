@@ -12,7 +12,6 @@ import { toOptimizedImage } from '../../helpers/general';
 
 const BlogPage = (props) => {
   const [blogData, setBlogData] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -26,8 +25,6 @@ const BlogPage = (props) => {
         }
       } catch (error) {
         console.error('Error fetching blogs from database:', error);
-      } finally {
-        setLoading(false);
       }
     };
 

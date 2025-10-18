@@ -98,7 +98,7 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Update failed');
+        throw {key: data.key, error: data.error || 'Update failed'};
       }
 
       setUser(data.user);
@@ -108,8 +108,8 @@ export const AuthProvider = ({ children }) => {
       }
 
       return { success: true, user: data.user };
-    } catch (error) {
-      return { success: false, error: error.message };
+    } catch (error) {      
+      return { success: false, error: error.error, key: error.key};
     }
   };
 

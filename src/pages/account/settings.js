@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { navigate } from 'gatsby';
 import { useAuth } from '../../context/AuthContext';
 import * as styles from './settings.module.css';
 
@@ -8,21 +7,17 @@ import Button from '../../components/Button';
 import Breadcrumbs from '../../components/Breadcrumbs';
 import FormInputField from '../../components/FormInputField';
 import Layout from '../../components/Layout/Layout';
+import { useToast } from '../../context/ToastContext';
 
 import {
   validateEmail,
-  validateStrongPassword,
-  isAuth,
+  validateStrongPassword
 } from '../../helpers/general';
 
 const SettingsPage = (props) => {
-  const { user, updateProfile, isAuthenticated, loading } = useAuth();
+  const { user, updateProfile, isAuthenticated } = useAuth();
 
-  // useEffect(() => {
-  //   if (!loading && isAuthenticated()) {
-  //     navigate('/account/settings');
-  //   }
-  // }, [loading, isAuthenticated]);
+  const { showToast } = useToast();
 
   const initialState = {
     firstName: '',
@@ -44,7 +39,6 @@ const SettingsPage = (props) => {
 
   const [updateForm, setUpdateForm] = useState(initialState);
   const [error, setError] = useState(errorState);
-  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     if (user && isAuthenticated()) {
@@ -115,25 +109,21 @@ const SettingsPage = (props) => {
 
         if (result.success) {
           setError(errorState);
-          setSuccessMessage('Profile updated successfully!');
+          showToast({ message: 'Profile updated successfully!', type: 'success', duration: 1000 });
           setUpdateForm({
             ...updateForm,
             currentPassword: '',
             password: '',
             confirmPassword: ''
           });
-          setTimeout(() => setSuccessMessage(''), 3000);
         } else {
-          setError({ ...errorState, email: result.error });
-          setSuccessMessage('');
+          setError({ ...errorState, [result.key]: result.error });
         }
       } else {
-        setSuccessMessage('No changes to save');
-        setTimeout(() => setSuccessMessage(''), 3000);
+        showToast({ message: 'No changes to save', type: 'info', duration: 1000 });
       }
     } else {
       setError(tempError);
-      setSuccessMessage('');
     }
   };
 
@@ -148,11 +138,6 @@ const SettingsPage = (props) => {
           ]}
         />
         <h1>Settings</h1>
-        {successMessage && (
-          <div className={styles.successMessage}>
-            {successMessage}
-          </div>
-        )}
         <div>
           <form onSubmit={(e) => handleSubmit(e)} noValidate>
             <div className={styles.nameSection}>

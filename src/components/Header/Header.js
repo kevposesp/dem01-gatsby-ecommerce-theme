@@ -1,7 +1,6 @@
 import React, { useState, useEffect, createRef } from 'react';
 import { Link, navigate } from 'gatsby';
-
-import { isAuth } from '../../helpers/general';
+import { useAuth } from '../../context/AuthContext';
 
 import AddNotification from '../AddNotification';
 import Brand from '../Brand';
@@ -25,6 +24,8 @@ const Header = (prop) => {
 
   const [showSearch, setShowSearch] = useState(false);
   const [search, setSearch] = useState('');
+
+  const { user } = useAuth();
 
   const searchRef = createRef();
   const bannerMessage = 'Free shipping worldwide';
@@ -136,11 +137,11 @@ const Header = (prop) => {
               <Icon symbol={'heart'}></Icon>
             </Link>
             <Link
-              aria-label="Orders"
-              href={isAuth() ? '/login' : '/account/orders/'}
+              aria-label="Settings"
+              href="/account/settings/"
               className={`${styles.iconContainer} ${styles.hideOnMobile}`}
             >
-              <Icon symbol={'user'}></Icon>
+              <Icon symbol={`${!user ? 'user' : 'initial'}`}></Icon>
             </Link>
             <button
               aria-label="Cart"

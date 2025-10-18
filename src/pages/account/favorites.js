@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { navigate } from 'gatsby';
 import * as styles from './favorites.module.css';
 
 import AccountLayout from '../../components/AccountLayout';
@@ -8,8 +7,6 @@ import Breadcrumbs from '../../components/Breadcrumbs';
 import FavoriteCard from '../../components/FavoriteCard/FavoriteCard';
 import Layout from '../../components/Layout/Layout';
 import Modal from '../../components/Modal';
-
-import { isAuth } from '../../helpers/general';
 
 const FavoritesPage = (props) => {
   const sampleFavorite1 = {
@@ -32,10 +29,6 @@ const FavoritesPage = (props) => {
     img: '/products/shirt3.jpg',
     alt: 'favorite 3',
   };
-
-  if (isAuth() === false) {
-    navigate('/login');
-  }
 
   const [showDelete, setShowDelete] = useState(false);
 

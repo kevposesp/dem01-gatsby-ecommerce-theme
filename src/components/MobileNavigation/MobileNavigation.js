@@ -3,16 +3,17 @@ import { Link, navigate } from 'gatsby';
 
 import Config from '../../config.json';
 import Icon from '../Icons/Icon';
-import { isAuth } from '../../helpers/general';
 
 //TO DO: refactor this to handle multiple nested links to avoid hardcoding 'depth'
 // have to restructure config.json
 // refactor this
 
 import * as styles from './MobileNavigation.module.css';
+import { useAuth } from '../../context/AuthContext';
 
 const MobileNavigation = (props) => {
   const { close } = props;
+  const { user } = useAuth();
 
   const [subMenu, setSubMenu] = useState();
   const [category, setCategory] = useState();
@@ -28,14 +29,14 @@ const MobileNavigation = (props) => {
     <div className={styles.root}>
       <nav>
         <div className={styles.headerAuth}>
-          {depth === 0 && isAuth() === false && (
+          {depth === 0 && !user && (
             <div className={styles.authLinkContainer}>
               <Link to={'/signup'}>Sign Up</Link>
               <Link to={'/login'}>Login</Link>
             </div>
           )}
 
-          {depth === 0 && isAuth() === true && (
+          {depth === 0 && user && (
             <div
               className={styles.welcomeContainer}
               role={'presentation'}
@@ -46,7 +47,7 @@ const MobileNavigation = (props) => {
             </div>
           )}
 
-          {depth === -1 && isAuth() === true && (
+          {depth === -1 && user && (
             <div
               className={styles.previousLinkContainer}
               onClick={() => setDepth(0)}
@@ -161,6 +162,9 @@ const MobileNavigation = (props) => {
                 </Link>
                 <Link to={'/account/settings/'} className={styles.mobileLink}>
                   Settings
+                </Link>
+                <Link to={'/account/favorites/'} className={styles.mobileLink}>
+                  Favorites
                 </Link>
                 <Link to={'/account/viewed/'} className={styles.mobileLink}>
                   Recently Viewed

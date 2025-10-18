@@ -1,5 +1,5 @@
 import { neon } from '@netlify/neon';
-const { verifyToken, extractBearerToken, hashPassword } = require('./utils/auth');
+const { verifyToken, extractBearerToken, hashPassword, verifyPassword } = require('./utils/auth');
 
 const sql = neon();
 
@@ -96,7 +96,7 @@ export default async (req, context) => {
 
       if (email) {
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-          return new Response(JSON.stringify({ error: 'Invalid email format' }), {
+          return new Response(JSON.stringify({ key: 'email', error: 'Invalid email format' }), {
             status: 400,
             headers: { 'Content-Type': 'application/json' }
           });
@@ -108,7 +108,7 @@ export default async (req, context) => {
         );
 
         if (existingEmail.length > 0) {
-          return new Response(JSON.stringify({ error: 'Email already in use' }), {
+          return new Response(JSON.stringify({ key: 'email', error: 'Email already in use' }), {
             status: 409,
             headers: { 'Content-Type': 'application/json' }
           });
@@ -122,6 +122,7 @@ export default async (req, context) => {
       if (newPassword) {
         if (!currentPassword) {
           return new Response(JSON.stringify({ 
+            key: 'currentPassword',
             error: 'Current password is required to change password' 
           }), {
             status: 400,
@@ -131,7 +132,8 @@ export default async (req, context) => {
 
         const isValidPassword = verifyPassword(currentPassword, users[0].password_hash);
         if (!isValidPassword) {
-          return new Response(JSON.stringify({ 
+          return new Response(JSON.stringify({
+            key: 'currentPassword',
             error: 'Current password is incorrect' 
           }), {
             status: 401,
@@ -141,6 +143,7 @@ export default async (req, context) => {
 
         if (!/(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/.test(newPassword)) {
           return new Response(JSON.stringify({ 
+            key: 'password',
             error: 'Password must have at least 8 characters, 1 lowercase, 1 uppercase and 1 numeric character' 
           }), {
             status: 400,

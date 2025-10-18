@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { navigate } from 'gatsby';
 import * as styles from './address.module.css';
 
 import AccountLayout from '../../components/AccountLayout';
@@ -10,7 +9,6 @@ import Icon from '../../components/Icons/Icon';
 import Layout from '../../components/Layout/Layout';
 import Modal from '../../components/Modal';
 
-import { isAuth } from '../../helpers/general';
 import Button from '../../components/Button';
 
 const AddressPage = (props) => {
@@ -35,10 +33,6 @@ const AddressPage = (props) => {
   const [addressList] = useState([address1, address2]);
   const [showForm, setShowForm] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
-
-  if (isAuth() === false) {
-    navigate('/login');
-  }
 
   return (
     <Layout>

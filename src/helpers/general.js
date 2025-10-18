@@ -60,26 +60,6 @@ function isEmpty(input) {
 }
 
 /**
- * Checks if user is authenticated
- * 
- * 
- * 
-    import { isAuth } from '../helpers/general'
-
-    isAuth()
- */
-function isAuth() {
-  const isBrowser = typeof window !== 'undefined';
-  if (isBrowser) {
-    const token = window.localStorage.getItem('key');
-    if (token) return true;
-    else return false;
-  } else {
-    return true;
-  }
-}
-
-/**
  * Adds a query param to URLs which is captures by redirect rules
  * (when running in Netlify - otherwise it's harmless)
  * 
@@ -94,4 +74,4 @@ function toOptimizedImage(imageUrl) {
           "imgcdn=true";
 }
 
-export { isNumeric, validateEmail, validateStrongPassword, isEmpty, isAuth, toOptimizedImage };
+export { isNumeric, validateEmail, validateStrongPassword, isEmpty, toOptimizedImage };

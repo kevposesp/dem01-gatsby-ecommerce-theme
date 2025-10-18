@@ -11,7 +11,7 @@ import Button from '../components/Button';
 import { useToast } from '../context/ToastContext';
 
 const LoginPage = (props) => {
-  const { login, isAuthenticated, loading } = useAuth();
+  const { login } = useAuth();
   const initialState = {
     email: '',
     password: '',
