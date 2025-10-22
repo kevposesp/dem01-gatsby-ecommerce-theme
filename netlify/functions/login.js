@@ -62,6 +62,15 @@ export default async (req, context) => {
 
     const token = generateToken(user.id, user.email);
 
+    const rolesResult = await sql(
+      `SELECT r.name FROM roles r
+       JOIN user_roles ur ON ur.role_id = r.id
+       WHERE ur.user_id = $1`,
+      [user.id]
+    );
+
+    const roles = rolesResult.map((r) => r.name);
+
     return new Response(JSON.stringify({
       message: 'Login successful',
       token,
@@ -69,7 +78,8 @@ export default async (req, context) => {
         id: user.id,
         firstName: user.first_name,
         lastName: user.last_name,
-        email: user.email
+        email: user.email,
+        roles
       }
     }), {
       status: 200,

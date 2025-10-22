@@ -37,6 +37,16 @@ export default async (req, context) => {
       }
 
       const user = users[0];
+
+      const rolesResult = await sql(
+        `SELECT r.name FROM roles r
+         JOIN user_roles ur ON ur.role_id = r.id
+         WHERE ur.user_id = $1`,
+        [user.id]
+      );
+
+      const roles = rolesResult.map((r) => r.name);
+
       return new Response(JSON.stringify({
         user: {
           id: user.id,
@@ -45,7 +55,8 @@ export default async (req, context) => {
           email: user.email,
           emailVerified: user.email_verified,
           createdAt: user.created_at,
-          updatedAt: user.updated_at
+          updatedAt: user.updated_at,
+          roles
         }
       }), {
         status: 200,
@@ -174,6 +185,15 @@ export default async (req, context) => {
         values
       );
 
+      const rolesResult = await sql(
+        `SELECT r.name FROM roles r
+         JOIN user_roles ur ON ur.role_id = r.id
+         WHERE ur.user_id = $1`,
+        [payload.userId]
+      );
+
+      const roles = rolesResult.map((r) => r.name);
+
       return new Response(JSON.stringify({
         message: 'Profile updated successfully',
         user: {
@@ -181,7 +201,8 @@ export default async (req, context) => {
           firstName: result[0].first_name,
           lastName: result[0].last_name,
           email: result[0].email,
-          updatedAt: result[0].updated_at
+          updatedAt: result[0].updated_at,
+          roles
         }
       }), {
         status: 200,

@@ -1,5 +1,5 @@
 [build]
-  command = "node scripts/migrate.js && gatsby build"
+  command = "for f in scripts/migrations/*.js; do node \"$f\" || exit $?; done && gatsby build"
   functions = "netlify/functions"
   publish = "public"
 

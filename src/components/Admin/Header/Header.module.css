@@ -1,0 +1,134 @@
+.root {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: var(--standard-white);
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
+    z-index: 50;
+}
+
+.iconButton {
+    border: none;
+    background-color: unset;
+    overflow: visible;
+    text-transform: none;
+    font-family: inherit;
+    font-size: 100%;
+    line-height: 1.15;
+    margin: 0;
+    -webkit-appearance: button;
+}
+
+.header {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    padding: 24px 8px 24px 8px;
+    margin: 0px 8px;
+}
+
+.actionContainers {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+
+.actionContainers>* {
+    margin-right: 16px;
+    cursor: pointer;
+    color: var(--standard-black);
+
+}
+
+.actionContainers>*:last-child {
+    margin-right: 0px;
+}
+
+.iconContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+}
+
+.iconContainer svg {
+    width: 20px;
+    height: 20px;
+}
+
+.menuContainer {
+    position: absolute;
+    background-color: var(--standard-white);
+    width: 100%;
+
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.2);
+}
+
+.show {
+    opacity: 1 !important;
+    visibility: visible !important;
+    max-height: 500px !important;
+}
+
+.hide {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    max-height: 0px !important;
+    height: 0px;
+}
+
+.backdrop {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    background-color: transparent;
+    z-index: -1;
+}
+
+.notificationContainer {
+    position: relative;
+}
+
+.burgerIcon {
+    display: flex;
+    align-items: center;
+}
+
+.burgerIcon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.mobileMenuContainer {
+    display: block;
+}
+
+.bagIconContainer {
+    position: relative;
+}
+
+.bagNotification {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+
+    width: 14px;
+    height: 14px;
+    background-color: var(--standard-gold);
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bagNotification span {
+    color: var(--standard-white);
+    font-size: 9px;
+}

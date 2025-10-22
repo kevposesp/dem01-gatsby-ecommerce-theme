@@ -5,6 +5,7 @@ import * as styles from './AccountNav.module.css';
 
 const AccountNav = (props) => {
   const { logout } = useAuth();
+  const { user } = useAuth();
   
   const handleLogout = () => {
     logout();
@@ -42,6 +43,15 @@ const AccountNav = (props) => {
         >
           Mis Favoritos
         </Link>
+        {user && Array.isArray(user.roles) && user.roles.includes('admin') && (
+          <Link
+            activeClassName={styles.activeLink}
+            to={'/admin/'}
+            className={styles.webLink}
+          >
+            Admin Dashboard
+          </Link>
+        )}
         <Link
           activeClassName={styles.activeLink}
           to={'/account/viewed/'}

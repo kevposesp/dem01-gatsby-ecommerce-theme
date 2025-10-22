@@ -15,9 +15,12 @@ exports.wrapRootElement = ({ element }) => (
 
 exports.wrapPageElement = ({ element, props }) => {
 
-  const protectedPrefixes = ["/account/", "/admin/", "/dashboard/"];
+  const adminRoutes = ["/admin/"];
+  const protectedPrefixes = ["/account/"];
   const publicRoutes = ["/login", "/register", "/forgot-password"];
 
+  const isAdminRoute = (pathname) =>
+    adminRoutes.some((prefix) => pathname.startsWith(prefix));
 
   const isProtectedRoute = (pathname) =>
     protectedPrefixes.some((prefix) => pathname.startsWith(prefix));
@@ -31,6 +34,15 @@ exports.wrapPageElement = ({ element, props }) => {
 
     React.useEffect(() => {
       if (!loading) {
+        if (isAdminRoute(path)) {
+          const hasAdmin = user && Array.isArray(user.roles) && user.roles.includes('admin');
+          if (!user || !hasAdmin) {
+            navigate('/');
+          } else {
+            return;
+          }
+        }
+        
         if (isProtectedRoute(path) && !user) {
           navigate(`/login?redirect=${encodeURIComponent(path)}`);
         }
@@ -38,10 +50,14 @@ exports.wrapPageElement = ({ element, props }) => {
         if (isPublicRoute(path) && user) {
           navigate("/account/settings");
         }
-      }
+      }      
     }, [user, loading, path]);
 
     if (loading) return null;
+
+    let isAdmin = user && Array.isArray(user.roles) && user.roles.includes('admin');
+
+    if (!isAdmin && isAdminRoute(path)) return null;
 
     if (user && isPublicRoute(path)) return null;
 

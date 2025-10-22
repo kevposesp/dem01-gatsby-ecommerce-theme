@@ -65,6 +65,12 @@ export default async (req, context) => {
       [firstName, lastName, email.toLowerCase(), passwordHash]
     );
 
+    await sql(
+      `INSERT INTO user_roles (user_id, role_id) 
+       VALUES ($1, (SELECT id FROM roles WHERE name = $2))`,
+      [result[0].id, 'customer']
+    );
+
     return new Response(JSON.stringify({
       message: 'User registered successfully',
       user: {

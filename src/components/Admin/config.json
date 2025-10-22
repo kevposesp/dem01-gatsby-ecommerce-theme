@@ -1,0 +1,153 @@
+{
+  "sidebarLinks": [
+    {
+      "menuLabel": "Productos",
+      "menuLink": "/admin/products",
+      "category": [
+        {
+          "categoryLabel": "Gestión de productos",
+          "submenu": [
+            {
+              "menuLabel": "Todos los productos",
+              "menuLink": "/admin/products"
+            },
+            {
+              "menuLabel": "Agregar nuevo",
+              "menuLink": "/admin/products/new"
+            },
+            {
+              "menuLabel": "Inventario",
+              "menuLink": "/admin/products/inventory"
+            }
+          ]
+        },
+        {
+          "categoryLabel": "Categorías de producto",
+          "submenu": [
+            {
+              "menuLabel": "Ver categorías",
+              "menuLink": "/admin/categories"
+            },
+            {
+              "menuLabel": "Crear categoría",
+              "menuLink": "/admin/categories/new"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "menuLabel": "Blog",
+      "menuLink": "/admin/blog",
+      "category": [
+        {
+          "categoryLabel": "Publicaciones",
+          "submenu": [
+            {
+              "menuLabel": "Todas las publicaciones",
+              "menuLink": "/admin/blog/posts"
+            },
+            {
+              "menuLabel": "Nueva publicación",
+              "menuLink": "/admin/blog/new"
+            }
+          ]
+        },
+        {
+          "categoryLabel": "Categorías del blog",
+          "submenu": [
+            {
+              "menuLabel": "Ver categorías",
+              "menuLink": "/admin/blog/categories"
+            },
+            {
+              "menuLabel": "Agregar categoría",
+              "menuLink": "/admin/blog/categories/new"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "menuLabel": "Usuarios",
+      "menuLink": "/admin/users",
+      "category": [
+        {
+          "categoryLabel": "Gestión de usuarios",
+          "submenu": [
+            {
+              "menuLabel": "Todos los usuarios",
+              "menuLink": "/admin/users"
+            },
+            {
+              "menuLabel": "Roles y permisos",
+              "menuLink": "/admin/users/roles"
+            },
+            {
+              "menuLabel": "Crear usuario",
+              "menuLink": "/admin/users/new"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "menuLabel": "Pedidos",
+      "menuLink": "/admin/orders",
+      "category": [
+        {
+          "categoryLabel": "Gestión de pedidos",
+          "submenu": [
+            {
+              "menuLabel": "Todos los pedidos",
+              "menuLink": "/admin/orders"
+            },
+            {
+              "menuLabel": "Pendientes",
+              "menuLink": "/admin/orders/pending"
+            },
+            {
+              "menuLabel": "Completados",
+              "menuLink": "/admin/orders/completed"
+            },
+            {
+              "menuLabel": "Cancelados",
+              "menuLink": "/admin/orders/cancelled"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "menuLabel": "Ofertas",
+      "menuLink": "/admin/offers",
+      "category": [
+        {
+          "categoryLabel": "Gestión de ofertas",
+          "submenu": [
+            {
+              "menuLabel": "Todas las ofertas",
+              "menuLink": "/admin/offers"
+            },
+            {
+              "menuLabel": "Crear oferta",
+              "menuLink": "/admin/offers/new"
+            },
+            {
+              "menuLabel": "Historial",
+              "menuLink": "/admin/offers/history"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "menuLabel": "Configuración",
+      "menuLink": "/admin/settings",
+      "category": null
+    }
+  ],
+  "sidebarConfig": {
+    "width": 240
+  }
+}

@@ -1,0 +1,9 @@
+.main {
+    margin-top: 72px;
+    display: flex;
+}
+
+.content {
+    transition: 1s;
+    padding: 24px;
+}
